@@ -9,11 +9,17 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showLatencyWarning, setShowLatencyWarning] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setShowLatencyWarning(false);
     setIsLoading(true);
+
+    const latencyTimeoutId = setTimeout(() => {
+      setShowLatencyWarning(true);
+    }, 5000);
 
     try {
       const res = await apiClient.post("/auth/signin", { email, password });
@@ -31,6 +37,8 @@ export default function Login() {
         setError("Network error. Is the backend running?");
       }
     } finally {
+      clearTimeout(latencyTimeoutId);
+      setShowLatencyWarning(false);
       setIsLoading(false);
     }
   };
@@ -61,6 +69,12 @@ export default function Login() {
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-[13px] px-3 py-2 rounded-lg text-center">
               {error}
+            </div>
+          )}
+
+          {showLatencyWarning && !error && (
+            <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[13px] px-3 py-2 rounded-lg text-center animate-pulse">
+              The service is deployed on Render's free tier. First-time cold starts may take up to 50 seconds. Please be patient!
             </div>
           )}
 
