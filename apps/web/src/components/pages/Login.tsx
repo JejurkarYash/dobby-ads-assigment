@@ -50,6 +50,12 @@ export default function Login() {
           <p className="text-[14px] text-[#888]">Sign in to your FileNest account</p>
         </div>
 
+        {/* Crendentails */}
+        <div className="mb-4">
+          <p className="text-[14px] font-bold text-[#888]">Email: test@gmail.com </p>
+          <p className="text-[14px] font-bold text-[#888]">Password: test </p>
+        </div>
+
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
 
           {error && (
